@@ -65,42 +65,98 @@ public class ExtractText implements Extractable{
 //	        logger.debug("Text shapes extracted successfully.");
 //	    }
 
+
+//	 private void readTextShape(XSLFTextShape textShape, List<Map<String, Object>> dataList) {
+//	 	Rectangle2D shapeAnchor = textShape.getAnchor();
+	 /**
+	  * refactor this code because of it is to long 
+	  */
+//		    double shapeX = shapeAnchor.getX();
+//		    double shapeY = shapeAnchor.getY();
+//		    double shapeRotation = 0.0; // default rotation value
+//		    if (textShape.getTextRotation() != null) {
+//		        shapeRotation = textShape.getTextRotation();
+//		    }
+//
+//	        for (XSLFTextParagraph paragraph : textShape) {
+//	            for (XSLFTextRun textRun : paragraph) {
+//	                String text = textRun.getRawText();
+//	                String font = textRun.getFontFamily();
+//	                double fontSize = textRun.getFontSize();
+//		            // Get the offset of the text run
+//		            double textRunOffset = textRun.getParagraph().getTextRuns().get(0).getCharacterSpacing();
+//		            
+//		            // Calculate the absolute x-coordinate of the text run
+//		            double textRunX = shapeX + textRunOffset;
+//		         // Get text width
+//		            Font awtFont = new Font(font, Font.PLAIN, (int)fontSize);
+//		            BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+//		            Graphics2D g2d = img.createGraphics();
+//		            g2d.setFont(awtFont);
+//		            FontMetrics fm = g2d.getFontMetrics();
+//		            int textWidth = fm.stringWidth(text);
+//		            g2d.dispose();
+//	                if (!text.equals("\n")) {
+//	                    Map<String, Object> data = new HashMap<>();
+//	                    data.put("text", text);
+//	                    data.put("font", font);
+//	                    data.put("fontSize", fontSize);
+//	                    data.put("textWidth", textWidth);
+//	                    data.put("x", textRunX);
+//	                    data.put("y", shapeY);
+//	                    data.put("rotation", shapeRotation);
+//	                    dataList.add(data);
+//	                    logger.debug("Added data: " + data);
+//	                }
+//	            }
+//	        }
+//	        logger.debug("Text shapes extracted successfully.");
+//	    }
+	 
 	 private void readTextShape(XSLFTextShape textShape, List<Map<String, Object>> dataList) {
-	 	Rectangle2D shapeAnchor = textShape.getAnchor();
+		    Rectangle2D shapeAnchor = textShape.getAnchor();
 		    double shapeX = shapeAnchor.getX();
 		    double shapeY = shapeAnchor.getY();
-	        for (XSLFTextParagraph paragraph : textShape) {
-	            for (XSLFTextRun textRun : paragraph) {
-	                String text = textRun.getRawText();
-	                String font = textRun.getFontFamily();
-	                double fontSize = textRun.getFontSize();
-		            // Get the offset of the text run
-		            double textRunOffset = textRun.getParagraph().getTextRuns().get(0).getCharacterSpacing();
-		            
-		            // Calculate the absolute x-coordinate of the text run
-		            double textRunX = shapeX + textRunOffset;
-		         // Get text width
-		            Font awtFont = new Font(font, Font.PLAIN, (int)fontSize);
-		            BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-		            Graphics2D g2d = img.createGraphics();
-		            g2d.setFont(awtFont);
-		            FontMetrics fm = g2d.getFontMetrics();
-		            int textWidth = fm.stringWidth(text);
+		    double shapeRotation = getShapeRotation(textShape);
+		    for (XSLFTextParagraph paragraph : textShape) {
+		        for (XSLFTextRun textRun : paragraph) {
+		            if (!textRun.getRawText().equals("\n")) {
+		                Map<String, Object> data = createDataMap(textRun, shapeX, shapeY, shapeRotation);
+		                dataList.add(data);
+		                logger.debug("Added data: " + data);
+		            }
+		        }
+		    }
+		    logger.debug("Text shapes extracted successfully.");
+		}
 
-		            g2d.dispose();
-	                if (!text.equals("\n")) {
-	                    Map<String, Object> data = new HashMap<>();
-	                    data.put("text", text);
-	                    data.put("font", font);
-	                    data.put("fontSize", fontSize);
-	                    data.put("textWidth", textWidth);
-	                    data.put("x", textRunX);
-	                    data.put("y", shapeY);
-	                    dataList.add(data);
-	                    logger.debug("Added data: " + data);
-	                }
-	            }
-	        }
-	        logger.debug("Text shapes extracted successfully.");
-	    }
+		private double getShapeRotation(XSLFTextShape textShape) {
+		    Double rotation = textShape.getTextRotation();
+		    return rotation != null ? rotation : 0.0;
+		}
+
+		private Map<String, Object> createDataMap(XSLFTextRun textRun, double shapeX, double shapeY, double shapeRotation) {
+		    String text = textRun.getRawText();
+		    String font = textRun.getFontFamily();
+		    double fontSize = textRun.getFontSize();
+		    double textRunOffset = textRun.getParagraph().getTextRuns().get(0).getCharacterSpacing();
+		    double textRunX = shapeX + textRunOffset;
+		    Font awtFont = new Font(font, Font.PLAIN, (int)fontSize);
+		    BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		    Graphics2D g2d = img.createGraphics();
+		    g2d.setFont(awtFont);
+		    FontMetrics fm = g2d.getFontMetrics();
+		    int textWidth = fm.stringWidth(text);
+		    g2d.dispose();
+		    Map<String, Object> data = new HashMap<>();
+		    data.put("text", text);
+		    data.put("font", font);
+		    data.put("fontSize", fontSize);
+		    data.put("textWidth", textWidth);
+		    data.put("x", textRunX);
+		    data.put("y", shapeY);
+		    data.put("rotation", shapeRotation);
+		    return data;
+		}
+
 }
