@@ -7,3 +7,7 @@ To run the application, you need to have the following software installed:
 Java Development Kit (JDK) 8 or higher
 Apache POI library 5.0.0 or higher
 log4j2 library 2.14.1 or higher
+
+
+## Contributing
+Contributions to this project are welcome. If you find any issues or have suggestions for improvement, please open an issue or submit a pull request.
