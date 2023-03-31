@@ -1,0 +1,24 @@
+[
+  {
+    "extension": ".jpg",
+    "widthPx": 4212,
+    "heightPx": 2808,
+    "name": "image1.jpeg",
+    "x": 480.0,
+    "width": 480.0,
+    "y": 270.12472440944885,
+    "type": "image/jpeg",
+    "height": 269.87629921259844
+  },
+  {
+    "extension": ".jpg",
+    "widthPx": 2261,
+    "heightPx": 1509,
+    "name": "image2.jpeg",
+    "x": 480.0,
+    "width": 480.0,
+    "y": -0.0011023622047244095,
+    "type": "image/jpeg",
+    "height": 270.72
+  }
+]
