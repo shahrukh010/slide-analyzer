@@ -11,7 +11,7 @@ To run the application, you need to have the following software installed:
 ## Installing
 1. Clone the repository to your local machine using the command:
 
-2. git clone https://github.com/your-username/slide-analyzer.git
+2. git clone https://github.com/shahrukh010/slide-analyzer.git
 
 3. Open the project in Eclipse or any other Java IDE.
 
