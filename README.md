@@ -9,15 +9,15 @@ To run the application, you need to have the following software installed:
 - log4j2 library 2.14.1 or higher
 
 ## Installing
-Clone the repository to your local machine using the command:
+1. Clone the repository to your local machine using the command:
 
-git clone https://github.com/your-username/slide-analyzer.git
+2. git clone https://github.com/your-username/slide-analyzer.git
 
-Open the project in Eclipse or any other Java IDE.
+3. Open the project in Eclipse or any other Java IDE.
 
-Add the Apache POI and log4j2 libraries to the project build path.
+4. Add the Apache POI and log4j2 libraries to the project build path.
 
-Run the Main.java file to start the application.
+5. Run the Main.java file to start the application.
 
 
 
