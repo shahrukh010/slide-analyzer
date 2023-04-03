@@ -1,29 +1,29 @@
 [
   {
     "rotation": 0.0,
-    "x": 95.8792125984252,
-    "y": 180.00015748031495,
-    "fontSize": 36.0,
-    "text": "HELLO",
-    "textWidth": 112,
-    "font": "Browallia New"
-  },
-  {
-    "rotation": 0.0,
-    "x": 95.8792125984252,
-    "y": 180.00015748031495,
-    "fontSize": 14.4,
-    "text": "paperflite",
-    "textWidth": 66,
+    "x": 94.94173228346456,
+    "y": 181.8751968503937,
+    "fontSize": 12.0,
+    "text": "Hello",
+    "textWidth": 29,
     "font": "Gill Sans MT"
   },
   {
     "rotation": 0.0,
-    "x": 95.8792125984252,
-    "y": 180.00015748031495,
-    "fontSize": 32.4,
+    "x": 94.94173228346456,
+    "y": 181.8751968503937,
+    "fontSize": 16.0,
+    "text": "paperflite",
+    "textWidth": 76,
+    "font": "Angsana New"
+  },
+  {
+    "rotation": 0.0,
+    "x": 94.94173228346456,
+    "y": 181.8751968503937,
+    "fontSize": 24.0,
     "text": "cleverystory",
-    "textWidth": 172,
+    "textWidth": 127,
     "font": "Arial"
   },
   {

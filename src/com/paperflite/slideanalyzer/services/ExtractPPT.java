@@ -16,6 +16,7 @@ import org.apache.poi.ooxml.POIXMLProperties.CoreProperties;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFPictureShape;
 import org.apache.poi.xslf.usermodel.XSLFShape;
+import org.apache.poi.xslf.usermodel.XSLFSimpleShape;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
 import org.apache.poi.xslf.usermodel.XSLFTextParagraph;
@@ -86,32 +87,39 @@ public class ExtractPPT {
 	    }
 	    }
 	}
-//	 private void readTextShape(XSLFTextShape textShape, List<Map<String, Object>> dataList) {
-//		 	Rectangle2D shapeAnchor = textShape.getAnchor();
-//			    double shapeX = shapeAnchor.getX();
-//			    double shapeY = shapeAnchor.getY();
-//		        for (XSLFTextParagraph paragraph : textShape) {
-//		            for (XSLFTextRun textRun : paragraph) {
-//		                String text = textRun.getRawText();
-//		                String font = textRun.getFontFamily();
-//		                double fontSize = textRun.getFontSize();
-//			            // Get the offset of the text run
-//			            double textRunOffset = textRun.getParagraph().getTextRuns().get(0).getCharacterSpacing();
-//			            
-//			            // Calculate the absolute x-coordinate of the text run
-//			            double textRunX = shapeX + textRunOffset;
-//		                if (!text.equals("\n")) {
-//		                    Map<String, Object> data = new HashMap<>();
-//		                    data.put("text", text);
-//		                    data.put("font", font);
-//		                    data.put("fontSize", fontSize);
-//		                    data.put("x", textRunX);
-//		                    data.put("y", shapeY);
-//		                    dataList.add(data);
-//		                    logger.debug("Added data: " + data);
-//		                }
-//		            }
-//		        }
-//		        logger.debug("Text shapes extracted successfully.");
-//		    }
+	
+	private List<Map<String, Object>> extractShapes(XSLFSlide slide) {
+	    List<Map<String, Object>> dataList = new ArrayList<>();
+
+	    for (XSLFShape shape : slide.getShapes()) {
+	        if (shape instanceof XSLFSimpleShape) {
+	            Rectangle2D shapeAnchor = shape.getAnchor();
+	            double shapeX = shapeAnchor.getX();
+	            double shapeY = shapeAnchor.getY();
+	            double shapeWidth = shapeAnchor.getWidth();
+	            double shapeHeight = shapeAnchor.getHeight();
+	            String shapeType = shape.getShapeName();
+
+	            Map<String, Object> data = new HashMap<>();
+	            data.put("x", shapeX);
+	            data.put("y", shapeY);
+	            data.put("width", shapeWidth);
+	            data.put("height", shapeHeight);
+	            data.put("type", shapeType);
+
+	            dataList.add(data);
+//	            logger.debug("Added data: " + data);
+	        }
+	    }
+
+//	    logger.debug("Shapes extracted successfully.");
+	    return dataList;
+	}
+
+	
+	
+	
+	
+	
+	
 }

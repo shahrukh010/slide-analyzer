@@ -1,23 +1,34 @@
 package com.paperflite.slideanalyzer.services.impl;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
+import org.apache.poi.xslf.usermodel.XSLFPictureShape;
 import org.apache.poi.xslf.usermodel.XSLFShape;
+import org.apache.poi.xslf.usermodel.XSLFSimpleShape;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 import org.apache.poi.xslf.usermodel.XSLFTextParagraph;
 import org.apache.poi.xslf.usermodel.XSLFTextRun;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
+import org.apache.poi.xssf.usermodel.XSSFSimpleShape;
 
 import com.paperflite.slideanalyzer.services.Extractable;
 
@@ -32,8 +43,10 @@ public class ExtractText implements Extractable{
 	    public List<Map<String, Object>> extract(XMLSlideShow ppt) {
 	        List<Map<String, Object>> dataList = new ArrayList<>();
 
+	        System.out.println(ppt.getSlides().size());
 	        for (XSLFSlide slide : ppt.getSlides()) {
 	            logger.info("Starting slide...");
+	            dataList.addAll(extractShapes(slide));
 	            List<XSLFShape> shapes = slide.getShapes();
 	            for (XSLFShape shape : shapes) {
 	                if (shape instanceof XSLFTextShape) {
@@ -69,7 +82,7 @@ public class ExtractText implements Extractable{
 //	 private void readTextShape(XSLFTextShape textShape, List<Map<String, Object>> dataList) {
 //	 	Rectangle2D shapeAnchor = textShape.getAnchor();
 	 /**
-	  * refactor this code because of it is to long 
+	  * refactor this code  
 	  */
 //		    double shapeX = shapeAnchor.getX();
 //		    double shapeY = shapeAnchor.getY();
@@ -134,6 +147,37 @@ public class ExtractText implements Extractable{
 		    Double rotation = textShape.getTextRotation();
 		    return rotation != null ? rotation : 0.0;
 		}
+
+		/*
+		 * In PowerPoint, everything on a slide is treated as a shape,
+		 *  including text boxes, images, graphs, charts, tables, and other object
+		 */
+		private List<Map<String, Object>> extractShapes(XSLFSlide slide) {
+		    List<Map<String, Object>> dataList = new ArrayList<>();
+
+		    for (XSLFShape shape : slide.getShapes()) {
+		        Rectangle2D shapeAnchor = shape.getAnchor();
+		        double shapeX = shapeAnchor.getX();
+		        double shapeY = shapeAnchor.getY();
+		        double shapeWidth = shapeAnchor.getWidth();
+		        double shapeHeight = shapeAnchor.getHeight();
+		        String shapeType = shape.getShapeName();
+
+		        Map<String, Object> data = new HashMap<>();
+		        data.put("x", shapeX);
+		        data.put("y", shapeY);
+		        data.put("width", shapeWidth);
+		        data.put("height", shapeHeight);
+		        data.put("type", shapeType);
+
+		        dataList.add(data);
+		        logger.debug("Added data: " + data);
+		    }
+
+		    logger.debug("Shapes extracted successfully.");
+		    return dataList;
+		}
+		
 
 		private Map<String, Object> createDataMap(XSLFTextRun textRun, double shapeX, double shapeY, double shapeRotation) {
 		    String text = textRun.getRawText();
