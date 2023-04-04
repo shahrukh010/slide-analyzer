@@ -49,7 +49,8 @@ public class ExtractText implements Extractable{
 	        for (XSLFSlide slide : ppt.getSlides()) {
 	            logger.info("Starting slide...");
 //	            dataList.addAll(extractShapes(slide));
-	            dataList.addAll(extractTextboxes(slide));
+//	            dataList.addAll(extractTextboxes(slide));
+	            dataList.addAll(extractEllipseShapes(slide));
 	            List<XSLFShape> shapes = slide.getShapes();
 	            for (XSLFShape shape : shapes) {
 	                if (shape instanceof XSLFTextShape) {
@@ -151,33 +152,31 @@ public class ExtractText implements Extractable{
 		    return rotation != null ? rotation : 0.0;
 		}
 
-		/*
-		 * In PowerPoint, everything on a slide is treated as a shape,
-		 *  including text boxes, images, graphs, charts, tables, and other object
-		 */
-		private List<Map<String, Object>> extractShapes(XSLFSlide slide) {
+		 
+		private List<Map<String, Object>> extractEllipseShapes(XSLFSlide slide) {
 		    List<Map<String, Object>> dataList = new ArrayList<>();
 
 		    for (XSLFShape shape : slide.getShapes()) {
-		        Rectangle2D shapeAnchor = shape.getAnchor();
-		        double shapeX = shapeAnchor.getX();
-		        double shapeY = shapeAnchor.getY();
-		        double shapeWidth = shapeAnchor.getWidth();
-		        double shapeHeight = shapeAnchor.getHeight();
-		        String shapeType = shape.getShapeName();
 
-		        Map<String, Object> data = new HashMap<>();
-		        data.put("x", shapeX);
-		        data.put("y", shapeY);
-		        data.put("width", shapeWidth);
-		        data.put("height", shapeHeight);
-		        data.put("type", shapeType);
+		    	System.out.println(shape.getShapeName());
+		        if (shape instanceof XSLFAutoShape && shape.getShapeName().equals("Isosceles Triangle 3")) {
+		            Rectangle2D shapeAnchor = shape.getAnchor();
+		            double shapeX = shapeAnchor.getX();
+		            double shapeY = shapeAnchor.getY();
+		            double shapeWidth = shapeAnchor.getWidth();
+		            double shapeHeight = shapeAnchor.getHeight();
 
-		        dataList.add(data);
-		        logger.debug("Added data: " + data);
+		            Map<String, Object> data = new HashMap<>();
+		            data.put("x", shapeX);
+		            data.put("y", shapeY);
+		            data.put("width", shapeWidth);
+		            data.put("height", shapeHeight);
+		            data.put("type", "Ellipse");
+
+		            dataList.add(data);
+		        }
 		    }
 
-		    logger.debug("Shapes extracted successfully.");
 		    return dataList;
 		}
 
@@ -185,6 +184,7 @@ public class ExtractText implements Extractable{
 		    List<Map<String, Object>> dataList = new ArrayList<>();
 
 		    for (XSLFShape shape : slide.getShapes()) {
+		    	System.out.println(shape.getShapeName());
 		         if (shape instanceof XSLFTextBox) {
 		            XSLFTextBox textBox = (XSLFTextBox) shape;
 		            String content = textBox.getText();
