@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +56,16 @@ public class Main {
 		// ExtractText extractText = new ExtractText();
 		List<Map<String, Object>> dataList = extractText.extract(ppt);
 		ExtractAndSaveImages images = new ExtractAndSaveImages();
-		List<Map<String, Object>> imageList = images.extract(ppt);
-		dataList.addAll(imageList);
+//		List<Map<String, Object>> imageList = images.extract(ppt);
+//		dataList.addAll(imageList);
+		
+
+//		List<Map<String, Object>> boxList = new ArrayList<>();
+//		 for (XSLFSlide slide : ppt.getSlides()) {
+//	                	boxList = extractText.extractTextboxes(slide);
+//	            }
+		
+		
 		// Save the extracted data to a JSON file
 		File jsonFile = new File("data.json");
 		SaveToJSON saveToJSON = new SaveToJSON(jsonFile);

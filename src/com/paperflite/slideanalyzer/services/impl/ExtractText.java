@@ -21,10 +21,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
+import org.apache.poi.xslf.usermodel.XSLFAutoShape;
 import org.apache.poi.xslf.usermodel.XSLFPictureShape;
 import org.apache.poi.xslf.usermodel.XSLFShape;
 import org.apache.poi.xslf.usermodel.XSLFSimpleShape;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
+import org.apache.poi.xslf.usermodel.XSLFTextBox;
 import org.apache.poi.xslf.usermodel.XSLFTextParagraph;
 import org.apache.poi.xslf.usermodel.XSLFTextRun;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
@@ -46,7 +48,8 @@ public class ExtractText implements Extractable{
 	        System.out.println(ppt.getSlides().size());
 	        for (XSLFSlide slide : ppt.getSlides()) {
 	            logger.info("Starting slide...");
-	            dataList.addAll(extractShapes(slide));
+//	            dataList.addAll(extractShapes(slide));
+	            dataList.addAll(extractTextboxes(slide));
 	            List<XSLFShape> shapes = slide.getShapes();
 	            for (XSLFShape shape : shapes) {
 	                if (shape instanceof XSLFTextShape) {
@@ -177,7 +180,34 @@ public class ExtractText implements Extractable{
 		    logger.debug("Shapes extracted successfully.");
 		    return dataList;
 		}
-		
+
+		public List<Map<String, Object>> extractTextboxes(XSLFSlide slide) {
+		    List<Map<String, Object>> dataList = new ArrayList<>();
+
+		    for (XSLFShape shape : slide.getShapes()) {
+		         if (shape instanceof XSLFTextBox) {
+		            XSLFTextBox textBox = (XSLFTextBox) shape;
+		            String content = textBox.getText();
+		            Rectangle2D anchor = textBox.getAnchor();
+		            double x = anchor.getX();
+		            double y = anchor.getY();
+		            double width = anchor.getWidth();
+		            double height = anchor.getHeight();
+		            Map<String, Object> data = new HashMap<>();
+		            data.put("x", x);
+		            data.put("y", y);
+		            data.put("width", width);
+		            data.put("height", height);
+		            data.put("content", content);
+		            dataList.add(data);
+		            logger.debug("Added data: " + data);
+		        }
+		    }
+
+		    logger.debug("Textboxes extracted successfully.");
+		    return dataList;
+		}
+
 
 		private Map<String, Object> createDataMap(XSLFTextRun textRun, double shapeX, double shapeY, double shapeRotation) {
 		    String text = textRun.getRawText();
