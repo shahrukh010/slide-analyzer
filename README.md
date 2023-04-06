@@ -1,6 +1,7 @@
 # Slide Analyzer
 Slide Analyzer is a Java application that extracts text and images from PowerPoint presentations and saves them to a JSON file.
 # Getting Started
+
 ## Prerequisites
 To run the application, you need to have the following software installed:
 
