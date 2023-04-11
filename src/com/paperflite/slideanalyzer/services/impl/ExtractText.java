@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFAutoShape;
 import org.apache.poi.xslf.usermodel.XSLFPictureShape;
@@ -30,6 +31,7 @@ import org.apache.poi.xslf.usermodel.XSLFTextBox;
 import org.apache.poi.xslf.usermodel.XSLFTextParagraph;
 import org.apache.poi.xslf.usermodel.XSLFTextRun;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFSimpleShape;
 
 import com.paperflite.slideanalyzer.services.Extractable;
@@ -51,12 +53,12 @@ public class ExtractText implements Extractable{
 //	            dataList.addAll(extractShapes(slide));
 //	            dataList.addAll(extractTextboxes(slide));
 	            dataList.addAll(extractEllipseShapes(slide));
-	            List<XSLFShape> shapes = slide.getShapes();
-	            for (XSLFShape shape : shapes) {
-	                if (shape instanceof XSLFTextShape) {
-	                    readTextShape((XSLFTextShape) shape, dataList);
-	                }
-	            }
+//	            List<XSLFShape> shapes = slide.getShapes();
+//	            for (XSLFShape shape : shapes) {
+//	                if (shape instanceof XSLFTextShape) {
+//	                    readTextShape((XSLFTextShape) shape, dataList);
+//	                }
+//	            }
 	        }
 	        return dataList;
 	    }
@@ -151,6 +153,7 @@ public class ExtractText implements Extractable{
 		    Double rotation = textShape.getTextRotation();
 		    return rotation != null ? rotation : 0.0;
 		}
+	
 
 		 
 		private List<Map<String, Object>> extractEllipseShapes(XSLFSlide slide) {
@@ -159,7 +162,7 @@ public class ExtractText implements Extractable{
 		    for (XSLFShape shape : slide.getShapes()) {
 
 		    	System.out.println(shape.getShapeName());
-		        if (shape instanceof XSLFAutoShape && shape.getShapeName().equals("Isosceles Triangle 3")) {
+		        if (shape instanceof XSLFAutoShape && shape.getShapeName().equals("Isosceles Triangle 3") || shape.getShapeName().equals("Cylinder 2")) {
 		            Rectangle2D shapeAnchor = shape.getAnchor();
 		            double shapeX = shapeAnchor.getX();
 		            double shapeY = shapeAnchor.getY();
@@ -167,11 +170,12 @@ public class ExtractText implements Extractable{
 		            double shapeHeight = shapeAnchor.getHeight();
 
 		            Map<String, Object> data = new HashMap<>();
+		            data.put("shape name", shape.getShapeName());
+		            data.put("type", "Ellipse");
 		            data.put("x", shapeX);
 		            data.put("y", shapeY);
 		            data.put("width", shapeWidth);
 		            data.put("height", shapeHeight);
-		            data.put("type", "Ellipse");
 
 		            dataList.add(data);
 		        }
@@ -232,5 +236,6 @@ public class ExtractText implements Extractable{
 		    data.put("rotation", shapeRotation);
 		    return data;
 		}
+
 
 }
