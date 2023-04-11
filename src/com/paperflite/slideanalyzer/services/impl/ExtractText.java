@@ -162,6 +162,7 @@ public class ExtractText implements Extractable{
 		    for (XSLFShape shape : slide.getShapes()) {
 
 		    	System.out.println(shape.getShapeName());
+
 		        if (shape instanceof XSLFAutoShape && shape.getShapeName().equals("Isosceles Triangle 3") || shape.getShapeName().equals("Cylinder 2")) {
 		            Rectangle2D shapeAnchor = shape.getAnchor();
 		            double shapeX = shapeAnchor.getX();

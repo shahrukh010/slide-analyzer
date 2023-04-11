@@ -88,38 +88,5 @@ public class ExtractPPT {
 	    }
 	}
 	
-	private List<Map<String, Object>> extractShapes(XSLFSlide slide) {
-	    List<Map<String, Object>> dataList = new ArrayList<>();
-
-	    for (XSLFShape shape : slide.getShapes()) {
-	        if (shape instanceof XSLFSimpleShape) {
-	            Rectangle2D shapeAnchor = shape.getAnchor();
-	            double shapeX = shapeAnchor.getX();
-	            double shapeY = shapeAnchor.getY();
-	            double shapeWidth = shapeAnchor.getWidth();
-	            double shapeHeight = shapeAnchor.getHeight();
-	            String shapeType = shape.getShapeName();
-
-	            Map<String, Object> data = new HashMap<>();
-	            data.put("x", shapeX);
-	            data.put("y", shapeY);
-	            data.put("width", shapeWidth);
-	            data.put("height", shapeHeight);
-	            data.put("type", shapeType);
-
-	            dataList.add(data);
-//	            logger.debug("Added data: " + data);
-	        }
-	    }
-
-//	    logger.debug("Shapes extracted successfully.");
-	    return dataList;
-	}
-
-	
-	
-	
-	
-	
 	
 }

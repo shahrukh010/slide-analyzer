@@ -25,30 +25,5 @@
     "text": "cleverystory",
     "textWidth": 232,
     "font": "Arial"
-  },
-  {
-    "x": 409.722125984252,
-    "width": 314.02803149606297,
-    "y": 158.5356692913386,
-    "content": "                         Text Box\nShahrukh@paperflite.com\n\n",
-    "height": 94.51409448818897
-  },
-  {
-    "rotation": 0.0,
-    "x": 409.722125984252,
-    "y": 158.5356692913386,
-    "fontSize": 18.0,
-    "text": "                         Text Box",
-    "textWidth": 227,
-    "font": "Trade Gothic Next Light"
-  },
-  {
-    "rotation": 0.0,
-    "x": 409.722125984252,
-    "y": 158.5356692913386,
-    "fontSize": 18.0,
-    "text": "Shahrukh@paperflite.com",
-    "textWidth": 223,
-    "font": "Trade Gothic Next Light"
   }
 ]

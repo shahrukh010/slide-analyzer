@@ -67,7 +67,7 @@ public class Main {
 		
 		
 		// Save the extracted data to a JSON file
-		File jsonFile = new File("shape.json");
+		File jsonFile = new File("data.json");
 		SaveToJSON saveToJSON = new SaveToJSON(jsonFile);
 		saveToJSON.saveToJSON(dataList);
 
