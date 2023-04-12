@@ -54,22 +54,22 @@ public class Main {
 		}
 		ExtractText extractText = new ExtractText();
 		// ExtractText extractText = new ExtractText();
-		List<Map<String, Object>> dataList = extractText.extract(ppt);
-		ExtractAndSaveImages images = new ExtractAndSaveImages();
+//		List<Map<String, Object>> dataList = extractText.extract(ppt);
+//		ExtractAndSaveImages images = new ExtractAndSaveImages();
 //		List<Map<String, Object>> imageList = images.extract(ppt);
 //		dataList.addAll(imageList);
 		
 
-//		List<Map<String, Object>> boxList = new ArrayList<>();
-//		 for (XSLFSlide slide : ppt.getSlides()) {
-//	                	boxList = extractText.extractTextboxes(slide);
-//	            }
+		List<Map<String, Object>> boxList = new ArrayList<>();
+		 for (XSLFSlide slide : ppt.getSlides()) {
+	                	boxList = extractText.extractTextboxes(slide);
+	            }
 		
 		
 		// Save the extracted data to a JSON file
-		File jsonFile = new File("data.json");
+		File jsonFile = new File("textbox.json");
 		SaveToJSON saveToJSON = new SaveToJSON(jsonFile);
-		saveToJSON.saveToJSON(dataList);
+		saveToJSON.saveToJSON(boxList);
 
 //####################################################################################################		
 //####################################################################################################		

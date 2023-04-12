@@ -1,9 +1,16 @@
 [
   {
+    "fontName": "Trade Gothic Next Light",
+    "underline": false,
+    "rotation": 0.0,
+    "strike": false,
     "x": 409.722125984252,
     "width": 314.02803149606297,
     "y": 158.5356692913386,
-    "content": "                         Text Box\nShahrukh@paperflite.com\n\n",
-    "height": 94.51409448818897
+    "fontSize": 18.0,
+    "bold": false,
+    "italic": false,
+    "content": "Text Box\nShahrukh@paperflite.com\n",
+    "height": 72.7031496062992
   }
 ]

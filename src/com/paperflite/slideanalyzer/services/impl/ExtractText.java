@@ -42,7 +42,6 @@ public class ExtractText implements Extractable{
     private static final Logger logger = LogManager.getLogger(ExtractText.class);
 
 
-	
 	 @Override
 	    public List<Map<String, Object>> extract(XMLSlideShow ppt) {
 	        List<Map<String, Object>> dataList = new ArrayList<>();
@@ -154,8 +153,6 @@ public class ExtractText implements Extractable{
 		    return rotation != null ? rotation : 0.0;
 		}
 	
-
-		 
 		private List<Map<String, Object>> extractEllipseShapes(XSLFSlide slide) {
 		    List<Map<String, Object>> dataList = new ArrayList<>();
 
@@ -185,14 +182,43 @@ public class ExtractText implements Extractable{
 		    return dataList;
 		}
 
+//		public List<Map<String, Object>> extractTextboxes(XSLFSlide slide) {
+//		    List<Map<String, Object>> dataList = new ArrayList<>();
+//
+//		    for (XSLFShape shape : slide.getShapes()) {
+//		    	System.out.println(shape.getShapeName());
+//		         if (shape instanceof XSLFTextBox) {
+//		            XSLFTextBox textBox = (XSLFTextBox) shape;
+//		            String content = textBox.getText();
+//		            Rectangle2D anchor = textBox.getAnchor();
+//		            double x = anchor.getX();
+//		            double y = anchor.getY();
+//		            double width = anchor.getWidth();
+//		            double height = anchor.getHeight();
+//		            Map<String, Object> data = new HashMap<>();
+//		            data.put("x", x);
+//		            data.put("y", y);
+//		            data.put("width", width);
+//		            data.put("height", height);
+//		            data.put("content", content);
+//		            dataList.add(data);
+//		            logger.debug("Added data: " + data);
+//		        }
+//		    }
+//
+//		    logger.debug("Textboxes extracted successfully.");
+//		    return dataList;
+//		}
+
 		public List<Map<String, Object>> extractTextboxes(XSLFSlide slide) {
 		    List<Map<String, Object>> dataList = new ArrayList<>();
 
 		    for (XSLFShape shape : slide.getShapes()) {
-		    	System.out.println(shape.getShapeName());
-		         if (shape instanceof XSLFTextBox) {
+		        if (shape instanceof XSLFTextBox) {
 		            XSLFTextBox textBox = (XSLFTextBox) shape;
 		            String content = textBox.getText();
+		            double rotation = textBox.getRotation();
+		            if(!content.isEmpty()) {
 		            Rectangle2D anchor = textBox.getAnchor();
 		            double x = anchor.getX();
 		            double y = anchor.getY();
@@ -204,14 +230,36 @@ public class ExtractText implements Extractable{
 		            data.put("width", width);
 		            data.put("height", height);
 		            data.put("content", content);
+		            data.put("rotation", rotation);
+
+		            // Get font information
+		            XSLFTextParagraph paragraph = textBox.getTextParagraphs().get(0);
+		            XSLFTextRun textRun = paragraph.getTextRuns().get(0);
+		            String fontName = textRun.getFontFamily();
+		            double fontSize = textRun.getFontSize();
+		            boolean bold = textRun.isBold();
+		            boolean italic = textRun.isItalic();
+		            boolean underline = textRun.isUnderlined();
+		            boolean strike = textRun.isStrikethrough();
+		            
+		            // Add font information to data map
+		            data.put("fontName", fontName);
+		            data.put("fontSize", fontSize);
+		            data.put("bold", bold);
+		            data.put("italic", italic);
+		            data.put("underline", underline);
+		            data.put("strike", strike);
+
 		            dataList.add(data);
 		            logger.debug("Added data: " + data);
+		            }
 		        }
 		    }
 
 		    logger.debug("Textboxes extracted successfully.");
 		    return dataList;
 		}
+
 
 
 		private Map<String, Object> createDataMap(XSLFTextRun textRun, double shapeX, double shapeY, double shapeRotation) {
