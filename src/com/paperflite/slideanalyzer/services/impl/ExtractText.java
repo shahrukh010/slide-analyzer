@@ -216,9 +216,9 @@ public class ExtractText implements Extractable{
 		    for (XSLFShape shape : slide.getShapes()) {
 		        if (shape instanceof XSLFTextBox) {
 		            XSLFTextBox textBox = (XSLFTextBox) shape;
-		            String content = textBox.getText();
+		            String text = textBox.getText();
 		            double rotation = textBox.getRotation();
-		            if(!content.isEmpty()) {
+		            if(!text.isEmpty()) {
 		            Rectangle2D anchor = textBox.getAnchor();
 		            double x = anchor.getX();
 		            double y = anchor.getY();
@@ -229,10 +229,9 @@ public class ExtractText implements Extractable{
 		            data.put("y", y);
 		            data.put("width", width);
 		            data.put("height", height);
-		            data.put("content", content);
+		            data.put("text", text);
 		            data.put("rotation", rotation);
 
-		            // Get font information
 		            XSLFTextParagraph paragraph = textBox.getTextParagraphs().get(0);
 		            XSLFTextRun textRun = paragraph.getTextRuns().get(0);
 		            String fontName = textRun.getFontFamily();
@@ -242,25 +241,69 @@ public class ExtractText implements Extractable{
 		            boolean underline = textRun.isUnderlined();
 		            boolean strike = textRun.isStrikethrough();
 		            
-		            // Add font information to data map
 		            data.put("fontName", fontName);
 		            data.put("fontSize", fontSize);
 		            data.put("bold", bold);
 		            data.put("italic", italic);
 		            data.put("underline", underline);
 		            data.put("strike", strike);
+		            String htmlContent = generateHtml(data);
+	                data.put("htmlContent", htmlContent);
+	                logger.debug("Added data: " + data);
 
-		            dataList.add(data);
-		            logger.debug("Added data: " + data);
+//	                // Generate HTML content
+//	                StringBuilder sb = new StringBuilder();
+//	                sb.append("<div style=\"");
+//	                sb.append("font-family:").append(fontName).append(";");
+//	                sb.append("font-size:").append(fontSize).append("pt;");
+//	                sb.append("font-weight:").append(bold ? "bold" : "normal").append(";");
+//	                sb.append("font-style:").append(italic ? "italic" : "normal").append(";");
+//	                sb.append("text-decoration:").append(underline ? "underline" : "none").append(";");
+//	                sb.append("text-align:").append(paragraph.getTextAlign().toString().toLowerCase()).append(";");
+//	                sb.append("transform: rotate(").append(rotation).append("deg);");
+//	                sb.append("\">");
+//	                sb.append(text);
+//	                sb.append("</div>");
+//	                String htmlContent = sb.toString();
+//	                data.put("htmlContent", htmlContent);
+	                dataList.add(data);
+	                logger.debug("Added data: " + data);
 		            }
 		        }
 		    }
-
-		    logger.debug("Textboxes extracted successfully.");
 		    return dataList;
+		}
+		private static String generateHtml(Map<String, Object> data) {
+		    StringBuilder sb = new StringBuilder();
+		    sb.append("<h6 style=\"font-size:").append(data.get("fontSize")).append("px;\">");
+		    sb.append("<span style=\"font-size:").append(data.get("fontSize")).append("px;");
+		    sb.append("font-family:'").append(data.get("fontName")).append("';");
+		    if ((boolean) data.get("bold")) {
+		        sb.append("font-weight:700;");
+		    } else {
+		        sb.append("font-weight:400;");
+		    }
+		    sb.append("color:rgb(0,0,0);background-color:transparent;");
+		    if ((boolean) data.get("italic")) {
+		        sb.append("font-style:italic;");
+		    } else {
+		        sb.append("font-style:normal;");
+		    }
+		    if ((boolean) data.get("underline")) {
+		        sb.append("text-decoration:underline solid rgb(0,0,0);");
+		    } else {
+		        sb.append("text-decoration:none solid rgb(0,0,0);");
+		    }
+		    sb.append("\">");
+		    String text = ((String) data.get("text")).replaceAll("\n", "<br>");
+		    sb.append(text);
+		    sb.append("</span></h6>");
+		    return sb.toString();
 		}
 
 
+		
+		
 
 		private Map<String, Object> createDataMap(XSLFTextRun textRun, double shapeX, double shapeY, double shapeRotation) {
 		    String text = textRun.getRawText();
