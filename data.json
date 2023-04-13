@@ -1,4 +1,5 @@
 [ {
+  "backgroundColor" : null,
   "underline" : false,
   "rotation" : 0.0,
   "strike" : false,
@@ -11,5 +12,6 @@
   "y" : 158.5356692913386,
   "fontSize" : 18.0,
   "text" : "Text Box\nShahrukh@paperflite.com\n",
+  "fontWeight" : "NORMAL",
   "height" : 72.7031496062992
 } ]

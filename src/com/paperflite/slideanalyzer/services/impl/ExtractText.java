@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -20,6 +21,9 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.sl.draw.DrawPaint;
+import org.apache.poi.sl.usermodel.ColorStyle;
+import org.apache.poi.sl.usermodel.PaintStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFAutoShape;
@@ -33,8 +37,11 @@ import org.apache.poi.xslf.usermodel.XSLFTextRun;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFSimpleShape;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTTextCharacterProperties;
 
 import com.paperflite.slideanalyzer.services.Extractable;
+
+import javafx.scene.text.FontWeight;
 
 
 public class ExtractText implements Extractable{
@@ -210,69 +217,185 @@ public class ExtractText implements Extractable{
 //		    return dataList;
 //		}
 
-		public List<Map<String, Object>> extractTextboxes(XSLFSlide slide) {
-		    List<Map<String, Object>> dataList = new ArrayList<>();
+//		public List<Map<String, Object>> extractTextboxes(XSLFSlide slide) {
+//		    List<Map<String, Object>> dataList = new ArrayList<>();
+//
+//		    for (XSLFShape shape : slide.getShapes()) {
+//		        if (shape instanceof XSLFTextBox) {
+//		            XSLFTextBox textBox = (XSLFTextBox) shape;
+//		            String text = textBox.getText();
+//		            double rotation = textBox.getRotation();
+//		            if(!text.isEmpty()) {
+//		            Rectangle2D anchor = textBox.getAnchor();
+//		            double x = anchor.getX();
+//		            double y = anchor.getY();
+//		            double width = anchor.getWidth();
+//		            double height = anchor.getHeight();
+//		            Map<String, Object> data = new HashMap<>();
+//		            data.put("x", x);
+//		            data.put("y", y);
+//		            data.put("width", width);
+//		            data.put("height", height);
+//		            data.put("text", text);
+//		            data.put("rotation", rotation);
+//
+//		            XSLFTextParagraph paragraph = textBox.getTextParagraphs().get(0);
+//		            XSLFTextRun textRun = paragraph.getTextRuns().get(0);
+//		            String fontName = textRun.getFontFamily();
+//		            double fontSize = textRun.getFontSize();
+//		            boolean bold = textRun.isBold();
+//		            boolean italic = textRun.isItalic();
+//		            boolean underline = textRun.isUnderlined();
+//		            boolean strike = textRun.isStrikethrough();
+//		            
+//		            data.put("fontName", fontName);
+//		            data.put("fontSize", fontSize);
+//		            data.put("bold", bold);
+//		            data.put("italic", italic);
+//		            data.put("underline", underline);
+//		            data.put("strike", strike);
+//		            String htmlContent = generateHtml(data);
+//	                data.put("htmlContent", htmlContent);
+//	                logger.debug("Added data: " + data);
+//
+////	                // Generate HTML content
+////	                StringBuilder sb = new StringBuilder();
+////	                sb.append("<div style=\"");
+////	                sb.append("font-family:").append(fontName).append(";");
+////	                sb.append("font-size:").append(fontSize).append("pt;");
+////	                sb.append("font-weight:").append(bold ? "bold" : "normal").append(";");
+////	                sb.append("font-style:").append(italic ? "italic" : "normal").append(";");
+////	                sb.append("text-decoration:").append(underline ? "underline" : "none").append(";");
+////	                sb.append("text-align:").append(paragraph.getTextAlign().toString().toLowerCase()).append(";");
+////	                sb.append("transform: rotate(").append(rotation).append("deg);");
+////	                sb.append("\">");
+////	                sb.append(text);
+////	                sb.append("</div>");
+////	                String htmlContent = sb.toString();
+////	                data.put("htmlContent", htmlContent);
+//	                dataList.add(data);
+//	                logger.debug("Added data: " + data);
+//		            }
+//		        }
+//		    }
+//		    return dataList;
+//		}
 
+//		public List<Map<String, Object>> extractTextboxes(XSLFSlide slide) {
+//		    List<Map<String, Object>> dataList = new ArrayList<>();
+//
+//		    for (XSLFShape shape : slide.getShapes()) {
+//		        if (shape instanceof XSLFTextBox) {
+//		            XSLFTextBox textBox = (XSLFTextBox) shape;
+//		            String text = textBox.getText();
+//		            double rotation = textBox.getRotation();
+//		            if (!text.isEmpty()) {
+//		                Rectangle2D anchor = textBox.getAnchor();
+//		                double x = anchor.getX();
+//		                double y = anchor.getY();
+//		                double width = anchor.getWidth();
+//		                double height = anchor.getHeight();
+//		                Map<String, Object> data = new HashMap<>();
+//		                data.put("x", x);
+//		                data.put("y", y);
+//		                data.put("width", width);
+//		                data.put("height", height);
+//		                data.put("text", text);
+//		                data.put("rotation", rotation);
+//
+//		                XSLFTextParagraph paragraph = textBox.getTextParagraphs().get(0);
+//		                XSLFTextRun textRun = paragraph.getTextRuns().get(0);
+//		                String fontName = textRun.getFontFamily();
+//		                double fontSize = textRun.getFontSize();
+//		                Color fontColor = (Color) textRun.getFontColor();
+//		                boolean bold = textRun.isBold();
+//		                boolean italic = textRun.isItalic();
+//		                boolean underline = textRun.isUnderlined();
+//		                boolean strike = textRun.isStrikethrough();
+//		                Paint backgroundColor = ((XSLFTextShape) textBox).getFillColor();
+//
+//
+//
+//		                FontWeight fontWeight = FontWeight.NORMAL;
+//		                if (fontName != null && fontName.toLowerCase().contains("bold")) {
+//		                    fontWeight = FontWeight.BOLD;
+//		                }
+//
+//		                data.put("fontName", fontName);
+//		                data.put("fontSize", fontSize);
+//		                data.put("bold", bold);
+//		                data.put("italic", italic);
+//		                data.put("underline", underline);
+//		                data.put("strike", strike);
+//		                data.put("backgroundColor", backgroundColor);
+//		                data.put("fontWeight", fontWeight);
+//
+//		            String htmlContent = generateHtml(data);
+//	                data.put("htmlContent", htmlContent);
+//	                logger.debug("Added data: " + data);
+//		             dataList.add(data);
+//		            }
+//		        }
+//		    }
+//
+//		    return dataList;
+//		}
+//
+
+	public	List<Map<String, Object>> extractTextboxes(XSLFSlide slide) {
+		    List<Map<String, Object>> dataList = new ArrayList<>();
 		    for (XSLFShape shape : slide.getShapes()) {
 		        if (shape instanceof XSLFTextBox) {
 		            XSLFTextBox textBox = (XSLFTextBox) shape;
 		            String text = textBox.getText();
-		            double rotation = textBox.getRotation();
-		            if(!text.isEmpty()) {
-		            Rectangle2D anchor = textBox.getAnchor();
-		            double x = anchor.getX();
-		            double y = anchor.getY();
-		            double width = anchor.getWidth();
-		            double height = anchor.getHeight();
-		            Map<String, Object> data = new HashMap<>();
-		            data.put("x", x);
-		            data.put("y", y);
-		            data.put("width", width);
-		            data.put("height", height);
-		            data.put("text", text);
-		            data.put("rotation", rotation);
+		            if (!text.isEmpty()) {
+		                Rectangle2D anchor = textBox.getAnchor();
+		                double x = anchor.getX();
+		                double y = anchor.getY();
+		                double width = anchor.getWidth();
+		                double height = anchor.getHeight();
+		                Map<String, Object> data = new HashMap<>();
+		                data.put("x", x);
+		                data.put("y", y);
+		                data.put("width", width);
+		                data.put("height", height);
+		                data.put("text", text);
 
-		            XSLFTextParagraph paragraph = textBox.getTextParagraphs().get(0);
-		            XSLFTextRun textRun = paragraph.getTextRuns().get(0);
-		            String fontName = textRun.getFontFamily();
-		            double fontSize = textRun.getFontSize();
-		            boolean bold = textRun.isBold();
-		            boolean italic = textRun.isItalic();
-		            boolean underline = textRun.isUnderlined();
-		            boolean strike = textRun.isStrikethrough();
-		            
-		            data.put("fontName", fontName);
-		            data.put("fontSize", fontSize);
-		            data.put("bold", bold);
-		            data.put("italic", italic);
-		            data.put("underline", underline);
-		            data.put("strike", strike);
-		            String htmlContent = generateHtml(data);
-	                data.put("htmlContent", htmlContent);
-	                logger.debug("Added data: " + data);
+		                XSLFTextParagraph paragraph = textBox.getTextParagraphs().get(0);
+		                XSLFTextRun textRun = paragraph.getTextRuns().get(0);
+		                String fontName = textRun.getFontFamily();
+		                double fontSize = textRun.getFontSize();
 
-//	                // Generate HTML content
-//	                StringBuilder sb = new StringBuilder();
-//	                sb.append("<div style=\"");
-//	                sb.append("font-family:").append(fontName).append(";");
-//	                sb.append("font-size:").append(fontSize).append("pt;");
-//	                sb.append("font-weight:").append(bold ? "bold" : "normal").append(";");
-//	                sb.append("font-style:").append(italic ? "italic" : "normal").append(";");
-//	                sb.append("text-decoration:").append(underline ? "underline" : "none").append(";");
-//	                sb.append("text-align:").append(paragraph.getTextAlign().toString().toLowerCase()).append(";");
-//	                sb.append("transform: rotate(").append(rotation).append("deg);");
-//	                sb.append("\">");
-//	                sb.append(text);
-//	                sb.append("</div>");
-//	                String htmlContent = sb.toString();
-//	                data.put("htmlContent", htmlContent);
-	                dataList.add(data);
-	                logger.debug("Added data: " + data);
+		                PaintStyle fontColorStyle = textRun.getFontColor();
+		                Color fontColor = null;
+		                if (fontColorStyle instanceof ColorStyle) {
+		                    fontColor = ((ColorStyle) fontColorStyle).getColor();
+		                }
+
+		                boolean bold = textRun.isBold();
+		                boolean italic = textRun.isItalic();
+		                boolean underline = textRun.isUnderlined();
+		                boolean strike = textRun.isStrikethrough();
+
+		                data.put("fontName", fontName);
+		                data.put("fontSize", fontSize);
+		                data.put("bold", bold);
+		                data.put("italic", italic);
+		                data.put("underline", underline);
+		                data.put("strike", strike);
+		                data.put("fontColor", fontColor);
+
+		                String htmlContent = generateHtml(data);
+		                data.put("htmlContent", htmlContent);
+		                logger.debug("Added data: " + data);
+		                dataList.add(data);
 		            }
 		        }
 		    }
+
 		    return dataList;
 		}
+
 
 		private static String generateHtml(Map<String, Object> data) {
 		    StringBuilder sb = new StringBuilder();
