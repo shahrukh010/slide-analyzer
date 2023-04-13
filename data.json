@@ -1,29 +1,15 @@
-[
-  {
-    "rotation": 0.0,
-    "x": 81.0,
-    "y": 294.27031496062995,
-    "fontSize": 19.8,
-    "text": "Hello",
-    "textWidth": 47,
-    "font": "Gill Sans MT"
-  },
-  {
-    "rotation": 0.0,
-    "x": 81.0,
-    "y": 294.27031496062995,
-    "fontSize": 19.8,
-    "text": "paperflite",
-    "textWidth": 88,
-    "font": "Angsana New"
-  },
-  {
-    "rotation": 0.0,
-    "x": 81.0,
-    "y": 294.27031496062995,
-    "fontSize": 43.2,
-    "text": "cleverystory",
-    "textWidth": 232,
-    "font": "Arial"
-  }
-]
+[ {
+  "underline" : false,
+  "rotation" : 0.0,
+  "strike" : false,
+  "bold" : false,
+  "italic" : false,
+  "htmlContent" : "<h6 style=\"font-size:18.0px;left:409.722125984252px;top:158.5356692913386px;width:314.02803149606297px;height:72.7031496062992px;transform:rotate(0.0deg);\"><span style=\"font-size:18.0px;font-family:'Trade Gothic Next Light';font-weight:400;color:rgb(0,0,0);background-color:transparent;font-style:normal;text-decoration:none solid rgb(0,0,0);\">Text Box<br>Shahrukh@paperflite.com<br></span></h6>",
+  "fontName" : "Trade Gothic Next Light",
+  "x" : 409.722125984252,
+  "width" : 314.02803149606297,
+  "y" : 158.5356692913386,
+  "fontSize" : 18.0,
+  "text" : "Text Box\nShahrukh@paperflite.com\n",
+  "height" : 72.7031496062992
+} ]

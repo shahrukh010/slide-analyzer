@@ -69,7 +69,8 @@ public class Main {
 		// Save the extracted data to a JSON file
 		File jsonFile = new File("textbox.json");
 		SaveToJSON saveToJSON = new SaveToJSON(jsonFile);
-		saveToJSON.saveToJSON(boxList);
+		saveToJSON.saveToJSON(boxList,"data.json");
+
 
 //####################################################################################################		
 //####################################################################################################		

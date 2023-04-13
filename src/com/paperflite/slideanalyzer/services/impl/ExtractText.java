@@ -273,9 +273,15 @@ public class ExtractText implements Extractable{
 		    }
 		    return dataList;
 		}
+
 		private static String generateHtml(Map<String, Object> data) {
 		    StringBuilder sb = new StringBuilder();
-		    sb.append("<h6 style=\"font-size:").append(data.get("fontSize")).append("px;\">");
+		    sb.append("<h6 style=\"font-size:").append(data.get("fontSize")).append("px;");
+		    sb.append("left:").append(data.get("x")).append("px;");
+		    sb.append("top:").append(data.get("y")).append("px;");
+		    sb.append("width:").append(data.get("width")).append("px;");
+		    sb.append("height:").append(data.get("height")).append("px;");
+		    sb.append("transform:rotate(").append(data.get("rotation")).append("deg);\">");
 		    sb.append("<span style=\"font-size:").append(data.get("fontSize")).append("px;");
 		    sb.append("font-family:'").append(data.get("fontName")).append("';");
 		    if ((boolean) data.get("bold")) {
@@ -298,9 +304,12 @@ public class ExtractText implements Extractable{
 		    String text = ((String) data.get("text")).replaceAll("\n", "<br>");
 		    sb.append(text);
 		    sb.append("</span></h6>");
+		    logger.info("Generated HTML: " + sb.toString());
+
 		    return sb.toString();
 		}
 
+		
 
 		
 		

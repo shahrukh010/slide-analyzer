@@ -1,17 +1,3 @@
-[
-  {
-    "underline": false,
-    "rotation": 0.0,
-    "strike": false,
-    "bold": false,
-    "italic": false,
-    "htmlContent": "\u003ch6 style\u003d\"font-size:18.0px;\"\u003e\u003cspan style\u003d\"font-size:18.0px;font-family:\u0027Trade Gothic Next Light\u0027;font-weight:400;color:rgb(0,0,0);background-color:transparent;font-style:normal;text-decoration:none solid rgb(0,0,0);\"\u003eText Box\u003cbr\u003eShahrukh@paperflite.com\u003cbr\u003e\u003c/span\u003e\u003c/h6\u003e",
-    "fontName": "Trade Gothic Next Light",
-    "x": 409.722125984252,
-    "width": 314.02803149606297,
-    "y": 158.5356692913386,
-    "fontSize": 18.0,
-    "text": "Text Box\nShahrukh@paperflite.com\n",
-    "height": 72.7031496062992
-  }
-]
+{
+  "htmlContent": "\u003ch6 style\u003d\"font-size:18.0px;\"\u003e\u003cspan style\u003d\"font-size:18.0px;font-family:\u0027Trade Gothic Next Light\u0027;font-weight:400;color:rgb(0,0,0);background-color:transparent;font-style:normal;text-decoration:none solid rgb(0,0,0);\"\u003eText Box\u003cbr\u003eShahrukh@paperflite.com\u003cbr\u003e\u003c/span\u003e\u003c/h6\u003e"
+}
