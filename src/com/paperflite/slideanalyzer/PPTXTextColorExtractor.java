@@ -89,6 +89,9 @@ public class PPTXTextColorExtractor {
         } else if (color.equals(Color.BLUE)) {
             return "Blue";
         }
+         else if (color.equals(Color.ORANGE)) {
+            return "Orange";
+        }
         else {
             int red = color.getRed();
             int green = color.getGreen();
