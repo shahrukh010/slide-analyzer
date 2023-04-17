@@ -24,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.poi.sl.draw.DrawPaint;
 import org.apache.poi.sl.usermodel.ColorStyle;
 import org.apache.poi.sl.usermodel.PaintStyle;
+import org.apache.poi.sl.usermodel.PaintStyle.SolidPaint;
 import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFAutoShape;
@@ -39,6 +40,7 @@ import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFSimpleShape;
 import org.openxmlformats.schemas.drawingml.x2006.main.CTTextCharacterProperties;
 
+import com.paperflite.slideanalyzer.PPTXTextColorExtractor;
 import com.paperflite.slideanalyzer.services.Extractable;
 
 import javafx.scene.text.FontWeight;
@@ -241,6 +243,11 @@ public class ExtractText implements Extractable{
 
 		            XSLFTextParagraph paragraph = textBox.getTextParagraphs().get(0);
 		            XSLFTextRun textRun = paragraph.getTextRuns().get(0);
+		            List<XSLFTextRun> textRuns = paragraph.getTextRuns();
+	                List<String> colors = PPTXTextColorExtractor.getFontColor(slide);
+	                System.out.println(colors);
+	                data.put("fontColors", colors);
+
 		            String fontName = textRun.getFontFamily();
 		            double fontSize = textRun.getFontSize();
 		            boolean bold = textRun.isBold();
@@ -280,7 +287,44 @@ public class ExtractText implements Extractable{
 		    }
 		    return dataList;
 		}
-
+		private String getFontColor(XSLFTextRun textRun) {
+		    PaintStyle paintStyle = textRun.getFontColor();
+		    if (paintStyle instanceof SolidPaint) {
+		        SolidPaint solidPaint = (SolidPaint) paintStyle;
+		        Color color = solidPaint.getSolidColor().getColor();
+		        return getColorName(color);
+		    } else {
+		        return null;
+		    }
+		}	
+		
+    private  String getColorName(Color color) {
+        if (color.equals(Color.BLACK)) {
+            return "Black";
+        } else if (color.equals(Color.WHITE)) {
+            return "White";
+        } else if (color.equals(Color.RED)) {
+            return "Red";
+        } else if (color.equals(Color.GREEN)) {
+            return "Green";
+        } else if (color.equals(Color.BLUE)) {
+            return "Blue";
+        }
+         else if (color.equals(Color.ORANGE)) {
+            return "Orange";
+        }
+        else {
+            int red = color.getRed();
+            int green = color.getGreen();
+            int blue = color.getBlue();
+            System.out.println(red+","+green+","+blue);
+            if (red == 163 && green == 163 && blue == 0) {
+                return "Dark Yellow";
+            } else {
+                return "Unknown";
+            }
+        }
+    }
 
 
 		private static String generateHtml(Map<String, Object> data) {
@@ -298,7 +342,10 @@ public class ExtractText implements Extractable{
 		    } else {
 		        sb.append("font-weight:400;");
 		    }
-		    sb.append("color:rgb(0,0,0);background-color:transparent;");
+//		    sb.append("color:rgb(0,0,0);background-color:transparent;");
+//		    sb.append("color:").append(data.get("fontColors")).append(";");
+		    sb.append("background-color:transparent;");
+
 		    if ((boolean) data.get("italic")) {
 		        sb.append("font-style:italic;");
 		    } else {

@@ -13,8 +13,9 @@ import org.apache.poi.xslf.usermodel.*;
 
 public class PPTXTextColorExtractor {
 	
-	public static void getFontColor(XSLFSlide slide) {
+	public static List<String> getFontColor(XSLFSlide slide) {
 		
+         List<String> colors = new ArrayList<>();
 	     // Get all text runs in the slide
         for (XSLFShape shape : slide.getShapes()) {
             if (shape instanceof XSLFTextShape) {
@@ -30,12 +31,14 @@ public class PPTXTextColorExtractor {
                             Color color = solidPaint.getSolidColor().getColor();
                             String colorName = getColorName(color);
                             System.out.println("Text: " + text + ", Text color: " + colorName);
+                            colors.add(colorName);
                         }
                         }
                     }
                 }
             }
         }
+        return colors;
 	}
 	
 	
